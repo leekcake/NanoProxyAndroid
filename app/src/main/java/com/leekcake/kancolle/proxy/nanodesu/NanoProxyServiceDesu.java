@@ -1,6 +1,7 @@
 package com.leekcake.kancolle.proxy.nanodesu;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -73,6 +74,13 @@ public class NanoProxyServiceDesu extends Service {
         super.onCreate();
         try {
             nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            NotificationCompat.Builder mCompatBuilder = new NotificationCompat.Builder( getApplicationContext() );
+            mCompatBuilder.setSmallIcon(R.mipmap.ic_launcher);
+            mCompatBuilder.setContentTitle("나노데스!");
+            mCompatBuilder.setContentText("NanoProxy is Running :p");
+            startForeground(13939, mCompatBuilder.build());
+
             server.registerFilter( new KancolleFilter() );
             server.Listen(3952);
 
@@ -181,7 +189,7 @@ public class NanoProxyServiceDesu extends Service {
                         style.setSummaryText("총/원정중/(완료) 함대 수: " + fleets.size() + "/" + workingFleet + "/" + workedFleet);
                         mCompatBuilder.setStyle(style);
 
-                        mCompatBuilder.setOngoing(true);
+                        mCompatBuilder.setOngoing(false);
                         mCompatBuilder.setAutoCancel(false);
 
                         nm.notify(account.tokenID.hashCode(), mCompatBuilder.build());
